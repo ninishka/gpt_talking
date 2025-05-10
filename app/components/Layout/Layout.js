@@ -100,12 +100,13 @@ const Layout = () => {
               >
                 <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong>
                 <ReactMarkdown
-                  children={msg.content}
                   components={{
                     p: ({ children }) => <p style={{ margin: '4px 0' }}>{children}</p>,
                     li: ({ children }) => <li style={{ marginLeft: '20px' }}>• {children}</li>,
                   }}
-                />
+                >
+                  {msg.content}
+              </ReactMarkdown>
               </div>
             ))
           )}
