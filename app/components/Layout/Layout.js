@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRef, useEffect } from 'react';
 
 import ReactMarkdown from 'react-markdown';
+import VoiceRecorder from '../VoiceRecorder/VoiceRecorder'; 
 
 
 import { 
@@ -16,7 +17,6 @@ MessageIcon,
 HiThere,
 SendArrow
 } from './styled';
-import Microphone from '@/app/icons/microphone.png';
 import message from '@/app/icons/message.png';
 
 
@@ -62,11 +62,21 @@ const Layout = () => {
   }, [input]);
 
 
+  const handleTranscript = (text) => {
+    setInput(prev => `${prev} ${text}`.trim());
+  };
+
   return (
     <LayoutContainer>
       <ChatContainer>
         <HelloIng>
-          <MessageIcon src={message} alt='message icon'/>
+          <MessageIcon
+           src={message} 
+           alt='message icon'
+           width={30}
+           height={30}
+           priority
+           />
           <HiThere>
             <h1>Hi there! <br/>What would you like to know?</h1>
           </HiThere>
@@ -102,8 +112,10 @@ const Layout = () => {
         </ChatBox>
 
         <InputWrapper>
-          <MicrophoneIcon src={Microphone} alt="Mic" />
+          {/* <MicrophoneIcon src={Microphone} alt="Mic" /> */}
+          <VoiceRecorder onTranscript={handleTranscript} />
           <TextInput
+            name="chat"
             ref={textAreaRef}
             placeholder="Ask whatever you want" 
             value={input}
