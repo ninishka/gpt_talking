@@ -43,6 +43,10 @@ const VoiceRecorder = ({ onTranscript }) => {
 
       recognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
+      
+        if (event.error === "network") {
+          alert("Speech recognition failed due to network issues. Make sure you're using HTTPS.");
+        }
       };
 
       recognition.onend = () => {
@@ -56,15 +60,23 @@ const VoiceRecorder = ({ onTranscript }) => {
   
 
   const toggleRecording = () => {
-    if (!recognitionRef.current) return;
-
+    if (!recognitionRef.current) {
+      console.warn("Speech recognition not supported.");
+      return;
+    }
+  
     if (isRecording) {
       recognitionRef.current.stop();
     } else {
-      recognitionRef.current.start();
+      try {
+        recognitionRef.current.start();
+      } catch (error) {
+        console.error("Failed to start recognition:", error);
+      }
     }
+  
     setIsRecording(!isRecording);
-  };
+  };  
 
   
 
