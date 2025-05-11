@@ -46,7 +46,7 @@ const Layout = () => {
     setMessages(prev => [...prev, assistantMessage]);
     setIsTyping(false);
   };
-  
+
   const textAreaRef = useRef(null);
   const lastAssistantRef = useRef(null);
   const typingRef = useRef(null);
@@ -137,6 +137,12 @@ const Layout = () => {
             placeholder="Ask whatever you want" 
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
             />
           <SendArrow onClick={sendMessage}>^</SendArrow>
         </InputWrapper>
