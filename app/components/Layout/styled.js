@@ -1,109 +1,139 @@
 
 import styled from 'styled-components'
 import Image from 'next/image'
+import { keyframes } from 'styled-components';
+
+const dots = keyframes`
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+`;
+
+export const TypingDots = styled.span`
+  &::after {
+    content: '';
+    animation: ${dots} 1.2s steps(3, end) infinite;
+    display: inline-block;
+    width: 1em;
+  }
+`;
 
 export const LayoutContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1d33;
+  background: teal;
   width: 100vw;
   height: 100vh;
   padding: 20px;
 `;
 
 export const ChatContainer = styled.div`
-  background-color: #2e3148;
+  background-color: cadetblue;
   width: 100%;
-  max-width: 1000px;
-  padding: 36px;
-  border-radius: 30px;
+  max-width: 900px;
+  padding: 32px;
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
-  gap: 59px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  gap: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 `;
 
+
+
 export const ChatBox = styled.div`
-  background-color: #3c4058;
-  padding: 50px;
-  border-radius: 30px;
+  background-color: teal;
+  padding: 24px;
+  border-radius: 20px;
   height: 450px;
-  overflow-y: scroll;
-  scrollbar-width: none;
+  overflow-y: auto;
   margin-bottom: 10px;
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
-  border-left: 3px solid #5a5a5a;
-  border-right: 3px solid #5a5a5a;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f7f9fc;
 `;
+
 
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 export const TextInput = styled.textarea`
-  width: 100%;
-  padding-left: 50px;
-  padding-right: 50px; 
-  padding-top: 22px;
-  padding-bottom: 12px;
-  background-color: #3c4058;
-  color: white;
-  height: 50px;
-  max-height: 150px;
+  flex-grow: 1;
+  padding: 14px 60px 14px 50px;
+  background-color: lightgrey;
+  color: #1f2937;
   border: none;
   border-radius: 30px;
   font-size: 16px;
   resize: none;
   overflow-y: auto;
+  height: 50px;
+  max-height: 150px;
   line-height: 1.4;
-  scrollbar-width: none;
-  border-left: 3px solid #5a5a5a;
-  border-right: 3px solid #5a5a5a;
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
+  }
 `;
+
+
 
 export const MicrophoneIcon = styled(Image)`
   position: absolute;
-  left: 10px;
+  left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 `;
 
 export const HelloIng = styled.div`
   display: flex;
   flex-direction: column;
-`
+  gap: 10px;
+`;
+
 export const MessageIcon = styled(Image)`
   width: 30px;
   height: 30px;
 `;
+
 export const HiThere = styled.div`
   color: white;
-  line-height: 50px;
-`
+  line-height: 1.6;
+`;
+
 export const SendArrow = styled.button`
   position: absolute;
-  right: -2px;
-  top: 49%;
-  font-size: 2vw;
+  right: 10px;
+  top: 50%;
+  font-size: 1.5rem;
   color: white;
-  background-color: #1a1d33;
+  background-color: #3b82f6;
   border: none;
   transform: translateY(-50%);
-  width: 5vw;
-  height: 3.7vw;
+  width: 45px;
+  height: 45px;
   cursor: pointer;
-  border-radius: 30px;
-  border-right: 3px solid #5a5a5a;
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 
-
-  &:hover{
-    background-color: #2e3148;
+  &:hover {
+    background-color: #2563eb;
+    transform: translateY(-50%) scale(1.05);
   }
-`
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+`;

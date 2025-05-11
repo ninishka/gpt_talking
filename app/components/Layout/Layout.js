@@ -11,11 +11,11 @@ ChatContainer,
 ChatBox,
 InputWrapper,
 TextInput,
-MicrophoneIcon,
 HelloIng,
 MessageIcon,
 HiThere,
-SendArrow
+SendArrow,
+TypingDots
 } from './styled';
 import message from '@/app/icons/message.png';
 
@@ -26,7 +26,6 @@ const Layout = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
-
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -41,18 +40,31 @@ const Layout = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: input }),
     });
-  
-
-
-
-
     const data = await res.json();
     const assistantMessage = { role: 'assistant', content: data.reply };
   
     setMessages(prev => [...prev, assistantMessage]);
     setIsTyping(false);
   };
+  
   const textAreaRef = useRef(null);
+  const lastAssistantRef = useRef(null);
+  const typingRef = useRef(null);
+
+  useEffect(() => {
+    if (isTyping && typingRef.current) {
+      typingRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [isTyping]);
+
+
+  useEffect(() => {
+    if (lastAssistantRef.current) {
+      lastAssistantRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [messages]);
+  
+  
 
   useEffect(() => {
     if (textAreaRef.current) {
@@ -60,11 +72,6 @@ const Layout = () => {
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
   }, [input]);
-
-
-  const handleTranscript = (text) => {
-    setInput(prev => `${prev} ${text}`.trim());
-  };
 
   return (
     <LayoutContainer>
@@ -91,11 +98,16 @@ const Layout = () => {
             messages.map((msg, index) => (
               <div
                 key={index}
+                ref={msg.role === 'assistant' && index === messages.length - 1 ? lastAssistantRef : null}
                 style={{
-                  color: msg.role === 'user' ? 'cyan' : 'white',
+                  color: msg.role === 'user' ? 'darklatestgrey' : '#0f172a',
+                  background: msg.role === 'user' ? 'lightgrey' : 'lightslategray',
+                  padding: '10px 16px',
+                  borderRadius: '12px',
+                  maxWidth: '85%',
+                  alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
                   marginBottom: '12px',
-                  wordBreak: 'break-word',
-                  overflowWrap: 'break-word',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
                 }}
               >
                 <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong>
@@ -110,11 +122,15 @@ const Layout = () => {
               </div>
             ))
           )}
+      {isTyping && (
+        <div ref={typingRef} style={{ color: 'white', marginBottom: '12px' }}>
+          <strong color='#0f172a'>AI:</strong> <TypingDots>Typing</TypingDots >
+        </div>
+      )}
         </ChatBox>
 
         <InputWrapper>
-          {/* <MicrophoneIcon src={Microphone} alt="Mic" /> */}
-          <VoiceRecorder onTranscript={handleTranscript} />
+          <VoiceRecorder  />
           <TextInput
             name="chat"
             ref={textAreaRef}
